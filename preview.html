@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Dynamic Title - Updated by JavaScript -->
+    <title id="page-title">Crypto Tracker - Live Cryptocurrency Prices</title>
+
+    <!-- Open Graph Meta Tags for Telegram/Social Preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Crypto Tracker">
+    <meta property="og:title" id="og-title" content="Crypto Tracker">
+    <meta property="og:description" id="og-description" content="Real-time cryptocurrency prices and market data">
+    <meta property="og:image" id="og-image"
+        content="https://adiru3.github.io/Crypto-Tracker/crypto_tracker_og_image_1770746029606.png">
+    <meta property="og:url" id="og-url" content="https://adiru3.github.io/Crypto-Tracker/preview.html">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="twitter-title" content="Crypto Tracker">
+    <meta name="twitter:description" id="twitter-description" content="Real-time cryptocurrency prices">
+    <meta name="twitter:image" id="twitter-image"
+        content="https://adiru3.github.io/Crypto-Tracker/crypto_tracker_og_image_1770746029606.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .preview-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .preview-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        .preview-title h1 {
+            font-size: 2rem;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .preview-title .symbol {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .preview-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            color: var(--text-primary);
+        }
+
+        .preview-change {
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-sm);
+            display: inline-block;
+        }
+
+        .preview-change.positive {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+        }
+
+        .preview-change.negative {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .preview-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: var(--border-radius-sm);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .preview-actions {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .preview-btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-family: var(--font-family);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .preview-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .preview-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .preview-btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .preview-btn-secondary:hover {
+            background: var(--bg-secondary);
+        }
+
+        .loading-preview {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--bg-tertiary);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-preview {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="preview-container">
+        <!-- Loading State -->
+        <div id="loading" class="loading-preview">
+            <div class="spinner"></div>
+            <p>Loading cryptocurrency data...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="error" class="error-preview" style="display: none;">
+            <div class="error-icon">⚠️</div>
+            <h2>Coin Not Found</h2>
+            <p>The requested cryptocurrency could not be found.</p>
+            <button class="preview-btn preview-btn-primary" onclick="window.location.href='index.html'">
+                View All Cryptocurrencies
+            </button>
+        </div>
+
+        <!-- Preview Card -->
+        <div id="preview" class="preview-card" style="display: none;">
+            <!-- Content will be dynamically inserted -->
+        </div>
+    </div>
+
+    <script src="preview.js"></script>
+</body>
+
+</html>

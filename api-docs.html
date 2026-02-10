@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - Crypto Tracker</title>
+
+    <!-- SEO -->
+    <meta name="description"
+        content="Complete API documentation for Crypto Tracker. Learn how to integrate real-time cryptocurrency data into your applications.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --bg-dark: #0a0e17;
+            --bg-secondary: #151b2b;
+            --bg-tertiary: #1e2740;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --success: #38ef7d;
+            --code-bg: #1a1d2e;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .intro {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .intro h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .intro p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h3 {
+            font-size: 1.3rem;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .endpoint {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid var(--success);
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .method {
+            background: var(--success);
+            color: var(--bg-dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .endpoint-url {
+            font-family: 'Fira Code', monospace;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .endpoint-desc {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .code-block code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .param-table th,
+        .param-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .param-table th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .param-table code {
+            background: var(--code-bg);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .info-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .info-box strong {
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="back-link">← Back to Tracker</a>
+            <h1>📚 API Documentation</h1>
+            <a href="https://github.com/Adiru3" target="_blank" class="back-link">GitHub →</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Introduction -->
+        <div class="intro">
+            <h2>🚀 Welcome to Crypto Tracker API</h2>
+            <p>
+                Powerful, free, and easy-to-use API for real-time cryptocurrency data.
+                Get access to 250+ coins, live prices, market analysis, and AI-powered recommendations.
+            </p>
+        </div>
+
+        <!-- What is the API -->
+        <section class="section">
+            <h2>🤔 What is Crypto Tracker API?</h2>
+            <p>
+                Crypto Tracker API is a RESTful service that provides real-time cryptocurrency market data.
+                It's designed to be simple, fast, and reliable for developers who want to integrate crypto prices
+                into their applications, websites, or trading bots.
+            </p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Real-Time Data</h4>
+                    <p>Live cryptocurrency prices updated every 60 seconds</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h4>250+ Coins</h4>
+                    <p>Support for Bitcoin, Ethereum, and 250+ altcoins</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h4>AI Recommendations</h4>
+                    <p>Smart profit predictions based on market analysis</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h4>Market Analytics</h4>
+                    <p>Volume, market cap, price changes, and trends</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h4>Free & Open</h4>
+                    <p>No API key required, completely free to use</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h4>CORS Enabled</h4>
+                    <p>Use directly from browser applications</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="section">
+            <h2>⚙️ How It Works</h2>
+            <p>
+                The API uses CoinGecko as the primary data source and implements smart caching to ensure
+                fast responses and avoid rate limits. Here's the architecture:
+            </p>
+
+            <div class="code-block">
+                <pre><code>Your App → Crypto Tracker API → Cache Layer → CoinGecko → Real Data
+
+Response time: &lt;100ms (cached) | &lt;500ms (fresh data)</code></pre>
+            </div>
+
+            <div class="info-box">
+                <strong>📌 Note:</strong> All data is cached for 5 minutes to ensure optimal performance.
+                This means you can make frequent requests without worrying about rate limits!
+            </div>
+        </section>
+
+        <!-- API Endpoints -->
+        <section class="section">
+            <h2>🔌 API Endpoints</h2>
+
+            <!-- Get All Coins -->
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-url">/api/coins</span>
+                </div>
+                <p class="endpoint-desc">Get a list of all supported cryptocurrencies with current prices and market
+                    data.</p>
+
+                <h4>Example Request:</h4>
+                <div class="code-block">
+                    <pre><code>fetch('https://your-api-domain.com/api/coins')
+  .then(res => res.json())
+  .then(data => console.log(data));</code></pre>
+                </div>
+
+                <h4>Example Response:</h4>
+                <div class="code-block">
+                    <pre><code>[
+  {
+    "id": "bitcoin",
+    "symbol": "btc",
+    "name": "Bitcoin",
+    "image": "https://...",
+    "current_price": 45000,
+    "market_cap": 880000000000,
+    "market_cap_rank": 1,
+    "price_change_percentage_24h": 2.5,
+    "total_volume": 25000000000
+  },
+  ...
+]</code></pre>
+                </div>
+            </div>
+
+            <!-- Get Single Coin -->
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-url">/api/coins/:id</span>
+                </div>
+                <p class="endpoint-desc">Get detailed information about a specific cryptocurrency.</p>
+
+                <h4>Parameters:</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td>string</td>
+                            <td>Coin ID (e.g., 'bitcoin', 'ethereum')</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Example:</h4>
+                <div class="code-block">
+                    <pre><code>GET /api/coins/bitcoin</code></pre>
+                </div>
+            </div>
+
+            <!-- Get Chart Data -->
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-url">/api/coins/:id/chart</span>
+                </div>
+                <p class="endpoint-desc">Get historical price data for charts.</p>
+
+                <h4>Parameters:</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td>string</td>
+                            <td>Coin ID</td>
+                        </tr>
+                        <tr>
+                            <td><code>days</code></td>
+                            <td>number</td>
+                            <td>Number of days (default: 30)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Example:</h4>
+                <div class="code-block">
+                    <pre><code>GET /api/coins/bitcoin/chart?days=7</code></pre>
+                </div>
+            </div>
+
+            <!-- Get Recommendations -->
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-url">/api/recommendations</span>
+                </div>
+                <p class="endpoint-desc">Get AI-powered cryptocurrency recommendations based on profit potential.</p>
+
+                <h4>Example Response:</h4>
+                <div class="code-block">
+                    <pre><code>[
+  {
+    "id": "ethereum",
+    "name": "Ethereum",
+    "recommendationScore": 85,
+    "reason": "Strong upward momentum + High volume"
+  },
+  ...
+]</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Cases -->
+        <section class="section">
+            <h2>💡 What You Can Build</h2>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 0.5rem 0;">✅ Portfolio tracking apps</li>
+                <li style="padding: 0.5rem 0;">✅ Price alert bots (Telegram, Discord)</li>
+                <li style="padding: 0.5rem 0;">✅ Trading dashboards</li>
+                <li style="padding: 0.5rem 0;">✅ Website widgets (like our Widget Builder!)</li>
+                <li style="padding: 0.5rem 0;">✅ Market analysis tools</li>
+                <li style="padding: 0.5rem 0;">✅ Educational platforms</li>
+            </ul>
+        </section>
+
+        <!-- Rate Limits -->
+        <section class="section">
+            <h2>⏱️ Rate Limits</h2>
+            <div class="info-box">
+                <strong>Current Limits:</strong> No strict rate limits! However, we recommend:
+                <ul style="margin-top: 0.5rem;">
+                    <li>Don't make more than 10 requests per second</li>
+                    <li>Implement caching on your end for frequently accessed data</li>
+                    <li>Respect the 5-minute cache duration</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Get Started -->
+        <section class="section">
+            <h2>🎯 Get Started</h2>
+            <p style="margin-bottom: 1.5rem;">Ready to integrate crypto data into your app?</p>
+            <a href="index.html" class="btn">Try Live Tracker</a>
+            <a href="widget-builder.html" class="btn btn-secondary">Widget Builder</a>
+            <a href="https://github.com/Adiru3" target="_blank" class="btn btn-secondary">View on GitHub</a>
+        </section>
+
+        <!-- Support -->
+        <section class="section">
+            <h2>❤️ Support the Project</h2>
+            <p>
+                If you find this API useful, consider supporting the development!
+                Your donations help keep the service running and free for everyone.
+            </p>
+            <a href="https://adiru3.github.io/Donate/" target="_blank" class="btn" style="margin-top: 1rem;">
+                💖 Support on Donate Page
+            </a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>
+            Made with ❤️ by <a href="https://github.com/Adiru3" target="_blank">Adiru3</a> |
+            <a href="https://adiru3.github.io/Donate/" target="_blank">Support</a> |
+            <a href="index.html">Home</a>
+        </p>
+    </footer>
+</body>
+
+</html>

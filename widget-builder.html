@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget Builder - Crypto Tracker</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="widget-builder.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="builder-header">
+        <div class="header-content">
+            <a href="index.html" class="back-link">← Back to Tracker</a>
+            <h1>🎨 Widget Builder</h1>
+            <button class="help-btn" onclick="toggleHelp()">?</button>
+        </div>
+    </header>
+
+    <!-- Main Builder Interface -->
+    <main class="builder-main">
+        <!-- Left Panel: Asset Browser -->
+        <aside class="builder-panel asset-panel">
+            <div class="panel-header">
+                <h2>📊 Select Assets</h2>
+                <span class="selected-count">
+                    <span id="selectedCount">0</span> selected
+                </span>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" id="assetSearch" class="search-input" placeholder="🔍 Search coins..."
+                    oninput="searchAssets(this.value)">
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="all" onclick="filterByCategory('all')">All</button>
+                <button class="category-tab" data-category="top10" onclick="filterByCategory('top10')">Top 10</button>
+                <button class="category-tab" data-category="defi" onclick="filterByCategory('defi')">DeFi</button>
+                <button class="category-tab" data-category="meme" onclick="filterByCategory('meme')">Meme</button>
+            </div>
+
+            <!-- Asset List -->
+            <div class="asset-list" id="assetList">
+                <!-- Assets will be rendered here -->
+            </div>
+
+            <!-- Clear All Button -->
+            <button class="clear-btn" onclick="clearAllAssets()">Clear All</button>
+        </aside>
+
+        <!-- Center Panel: Live Preview -->
+        <section class="builder-panel preview-panel">
+            <div class="panel-header">
+                <h2>👁️ Live Preview</h2>
+                <div class="preview-controls">
+                    <button class="device-btn active" data-device="desktop"
+                        onclick="setPreviewDevice('desktop')">💻</button>
+                    <button class="device-btn" data-device="tablet" onclick="setPreviewDevice('tablet')">📱</button>
+                    <button class=" device-btn" data-device="mobile" onclick="setPreviewDevice('mobile')">📱</button>
+                </div>
+            </div>
+
+            <!-- Preview Container -->
+            <div class="preview-container" id="previewContainer">
+                <div class="preview-wrapper" id="previewWrapper">
+                    <div class="preview-empty">
+                        <div class="empty-icon">🎨</div>
+                        <h3>Select assets to start</h3>
+                        <p>Choose cryptocurrencies from the left panel</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Background Color Picker -->
+            <div class="preview-bg-controls">
+                <label>
+                    <span>Preview Background:</span>
+                    <input type="color" id="previewBg" value="#1a1d2e" onchange="updatePreviewBg(this.value)">
+                </label>
+            </div>
+        </section>
+
+        <!-- Right Panel: Customization -->
+        <aside class="builder-panel settings-panel">
+            <div class="panel-header">
+                <h2>⚙️ Customize</h2>
+            </div>
+
+            <div class="settings-content">
+                <!-- Widget Type -->
+                <div class="setting-group">
+                    <label class="setting-label">Widget Type</label>
+                    <div class="widget-type-selector">
+                        <button class="type-btn active" data-type="card" onclick="setWidgetType('card')">
+                            <span class="type-icon">📇</span>
+                            <span>Cards</span>
+                        </button>
+                        <button class="type-btn" data-type="ticker" onclick="setWidgetType('ticker')">
+                            <span class="type-icon">📊</span>
+                            <span>Ticker</span>
+                        </button>
+                        <button class="type-btn" data-type="list" onclick="setWidgetType('list')">
+                            <span class="type-icon">📋</span>
+                            <span>List</span>
+                        </button>
+                        <button class="type-btn" data-type="grid" onclick="setWidgetType('grid')">
+                            <span class="type-icon">🔲</span>
+                            <span>Grid</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Theme -->
+                <div class="setting-group">
+                    <label class="setting-label">Theme</label>
+                    <div class="theme-selector">
+                        <button class="theme-btn active" data-theme="dark" onclick="setTheme('dark')">🌙 Dark</button>
+                        <button class="theme-btn" data-theme="light" onclick="setTheme('light')">☀️ Light</button>
+                    </div>
+                </div>
+
+                <!-- Colors -->
+                <div class="setting-group">
+                    <label class="setting-label">Colors</label>
+                    <div class="color-pickers">
+                        <div class="color-picker-item">
+                            <label>Primary</label>
+                            <input type="color" id="primaryColor" value="#667eea"
+                                onchange="updateColor('primary', this.value)">
+                        </div>
+                        <div class="color-picker-item">
+                            <label>Background</label>
+                            <input type="color" id="bgColor" value="#1e2740"
+                                onchange="updateColor('background', this.value)">
+                        </div>
+                        <div class="color-picker-item">
+                            <label>Text</label>
+                            <input type="color" id="textColor" value="#ffffff"
+                                onchange="updateColor('text', this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dimensions -->
+                <div class="setting-group">
+                    <label class="setting-label">Width: <span id="widthValue">400px</span></label>
+                    <input type="range" id="widthSlider" min="200" max="800" value="400" step="10"
+                        oninput="updateWidth(this.value)">
+                </div>
+
+                <div class="setting-group">
+                    <label class="setting-label">Border Radius: <span id="radiusValue">12px</span></label>
+                    <input type="range" id="radiusSlider" min="0" max="32" value="12" step="2"
+                        oninput="updateRadius(this.value)">
+                </div>
+
+                <!-- Toggle Options -->
+                <div class="setting-group">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="showLogos" checked onchange="toggleOption('logos', this.checked)">
+                        <span>Show Logos</span>
+                    </label>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="showChange" checked onchange="toggleOption('change', this.checked)">
+                        <span>Show Price Change</span>
+                    </label>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="showShadow" checked onchange="toggleOption('shadow', this.checked)">
+                        <span>Drop Shadow</span>
+                    </label>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="enableAnimation" onchange="toggleOption('animation', this.checked)">
+                        <span>Animations</span>
+                    </label>
+                </div>
+
+                <!-- Export Section -->
+                <div class="export-section">
+                    <h3>📥 Export Widget</h3>
+                    <button class="export-btn primary" onclick="exportHTML()">
+                        📋 Copy HTML
+                    </button>
+                    <button class="export-btn" onclick="exportIframe()">
+                        🖼️ Copy iframe
+                    </button>
+                    <button class="export-btn" onclick="exportReact()">
+                        ⚛️ React Component
+                    </button>
+                    <button class="export-btn" onclick="downloadWidget()">
+                        💾 Download
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Help Modal -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="toggleHelp()">×</button>
+            <h2>🎓 How to Use Widget Builder</h2>
+            <ol>
+                <li>Select cryptocurrencies from the left panel</li>
+                <li>Choose widget type and customize appearance</li>
+                <li>Preview your widget in real-time</li>
+                <li>Export and embed on your website</li>
+            </ol>
+        </div>
+    </div>
+
+    <script src="widget-builder.js"></script>
+</body>
+
+</html>

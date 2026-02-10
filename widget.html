@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Widget</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            color: #ffffff;
+            padding: 1rem;
+        }
+
+        .widget-container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .widget-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .widget-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .widget-info h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .widget-info .symbol {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+        }
+
+        .widget-price {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .widget-change {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .widget-change.positive {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .widget-change.negative {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .widget-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .widget-footer {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .widget-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .widget-link:hover {
+            text-decoration: underline;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="widget-container" id="widget">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Loading cryptocurrency data...</p>
+        </div>
+    </div>
+
+    <script>
+        const CONFIG = {
+            API_BASE_URL: 'https://api.coingecko.com/api/v3',
+            PROJECT_URL: 'https://adiru3.github.io/Crypto-Tracker',
+            UPDATE_INTERVAL: 60000 // Auto-update every 60 seconds
+        };
+
+        let currentCoinId = null;
+        let currentMode = 'detailed'; // default mode
+        let updateInterval = null;
+
+        // Get coin ID and mode from URL parameters
+        function getParamsFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                coin: params.get('coin') || 'bitcoin',
+                mode: params.get('mode') || 'detailed'
+            };
+        }
+
+        // Format price
+        function formatPrice(price) {
+            if (price >= 1) {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(price);
+            } else if (price >= 0.01) {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 4,
+                    maximumFractionDigits: 4
+                }).format(price);
+            } else {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 6,
+                    maximumFractionDigits: 8
+                }).format(price);
+            }
+        }
+
+        // Format large numbers
+        function formatLargeNumber(num) {
+            if (num >= 1e12) return `$${(num / 1e12).toFixed(2)}T`;
+            if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;
+            if (num >= 1e6) return `$${(num / 1e6).toFixed(2)}M`;
+            if (num >= 1e3) return `$${(num / 1e3).toFixed(2)}K`;
+            return `$${num.toFixed(2)}`;
+        }
+
+        // Fetch coin data
+        async function fetchCoinData(coinId) {
+            const response = await fetch(
+                `${CONFIG.API_BASE_URL}/coins/markets?vs_currency=usd&ids=${coinId}&order=market_cap_desc&sparkline=false&price_change_percentage=24h`
+            );
+            const data = await response.json();
+            return data[0];
+        }
+
+        // Render widget based on mode
+        function renderWidget(coinData) {
+            const change = coinData.price_change_percentage_24h;
+            const changeClass = change >= 0 ? 'positive' : 'negative';
+            const changeText = change >= 0 ? `+${change.toFixed(2)}%` : `${change.toFixed(2)}%`;
+            const changeIcon = change >= 0 ? '📈' : '📉';
+
+            if (currentMode === 'simple') {
+                // Simple mode: Just price and change
+                document.getElementById('widget').innerHTML = `
+                    <div class="widget-header">
+                        <img src="${coinData.image}" alt="${coinData.name}" class="widget-icon">
+                        <div class="widget-info">
+                            <h2>${coinData.name}</h2>
+                            <span class="symbol">${coinData.symbol.toUpperCase()}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="widget-price" id="price">${formatPrice(coinData.current_price)}</div>
+                    
+                    <div class="widget-change ${changeClass}" id="change">
+                        ${changeIcon} ${changeText} (24h)
+                    </div>
+                    
+                    <div class="widget-footer">
+                        <span>🔄 Updates every 60s</span>
+                        <a href="${CONFIG.PROJECT_URL}" target="_blank" class="widget-link">Crypto Tracker</a>
+                    </div>
+                `;
+            } else {
+                // Detailed mode: Full stats
+                document.getElementById('widget').innerHTML = `
+                    <div class="widget-header">
+                        <img src="${coinData.image}" alt="${coinData.name}" class="widget-icon">
+                        <div class="widget-info">
+                            <h2>${coinData.name}</h2>
+                            <span class="symbol">${coinData.symbol.toUpperCase()}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="widget-price" id="price">${formatPrice(coinData.current_price)}</div>
+                    
+                    <div class="widget-change ${changeClass}" id="change">
+                        ${changeIcon} ${changeText} (24h)
+                    </div>
+                    
+                    <div class="widget-stats">
+                        <div class="stat-box">
+                            <div class="stat-label">Market Cap</div>
+                            <div class="stat-value" id="mcap">${formatLargeNumber(coinData.market_cap)}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">24h Volume</div>
+                            <div class="stat-value" id="volume">${formatLargeNumber(coinData.total_volume)}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Rank</div>
+                            <div class="stat-value" id="rank">#${coinData.market_cap_rank}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">24h High</div>
+                            <div class="stat-value" id="high">${formatPrice(coinData.high_24h)}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="widget-footer">
+                        <span>🔄 Updates every 60s</span>
+                        <a href="${CONFIG.PROJECT_URL}" target="_blank" class="widget-link">Crypto Tracker</a>
+                    </div>
+                `;
+            }
+        }
+
+        // Update widget data
+        async function updateWidget() {
+            if (!currentCoinId) return;
+
+            try {
+                const coinData = await fetchCoinData(currentCoinId);
+
+                // Update price
+                document.getElementById('price').textContent = formatPrice(coinData.current_price);
+
+                // Update change
+                const change = coinData.price_change_percentage_24h;
+                const changeClass = change >= 0 ? 'positive' : 'negative';
+                const changeText = change >= 0 ? `+${change.toFixed(2)}%` : `${change.toFixed(2)}%`;
+                const changeIcon = change >= 0 ? '📈' : '📉';
+                const changeEl = document.getElementById('change');
+                changeEl.className = `widget-change ${changeClass}`;
+                changeEl.textContent = `${changeIcon} ${changeText} (24h)`;
+
+                // Update stats (only in detailed mode)
+                if (currentMode === 'detailed') {
+                    document.getElementById('mcap').textContent = formatLargeNumber(coinData.market_cap);
+                    document.getElementById('volume').textContent = formatLargeNumber(coinData.total_volume);
+                    document.getElementById('high').textContent = formatPrice(coinData.high_24h);
+                }
+
+                console.log(`Widget updated at ${new Date().toLocaleTimeString()}`);
+            } catch (error) {
+                console.error('Failed to update widget:', error);
+            }
+        }
+
+        // Initialize widget
+        async function init() {
+            const params = getParamsFromURL();
+            currentCoinId = params.coin;
+            currentMode = params.mode;
+
+            console.log(`Widget mode: ${currentMode}, coin: ${currentCoinId}`);
+
+            try {
+                const coinData = await fetchCoinData(currentCoinId);
+                renderWidget(coinData);
+
+                // Start auto-update
+                updateInterval = setInterval(updateWidget, CONFIG.UPDATE_INTERVAL);
+                console.log('Widget auto-update started');
+            } catch (error) {
+                document.getElementById('widget').innerHTML = `
+                    <div class="loading">
+                        <p>Failed to load cryptocurrency data</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Start when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+
+</html>

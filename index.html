@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Crypto Tracker - Real-Time Cryptocurrency Prices & Market Analysis | 250+ Coins</title>
+    <meta name="title" content="Crypto Tracker - Real-Time Cryptocurrency Prices & Market Analysis">
+    <meta name="description"
+        content="Track 250+ cryptocurrencies in real-time with AI-powered profit recommendations. Create embeddable widgets, analyze market trends, and get live price updates. Free crypto tracker with advanced filters.">
+    <meta name="keywords"
+        content="cryptocurrency tracker, bitcoin price, ethereum price, crypto market analysis, real-time crypto prices, cryptocurrency widgets, crypto recommendations, altcoin tracker, crypto portfolio, btc eth prices">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English, Russian, Ukrainian">
+    <meta name="author" content="Crypto Tracker">
+    <meta name="theme-color" content="#667eea">
+    <link rel="canonical" href="https://cryptotracker.com/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://cryptotracker.com/">
+    <meta property="og:title" content="Crypto Tracker - Real-Time Cryptocurrency Prices & Market Analysis">
+    <meta property="og:description"
+        content="Track 250+ cryptocurrencies with AI recommendations, live charts, and embeddable widgets. Get real-time price updates and profit insights.">
+    <meta property="og:image" content="https://cryptotracker.com/images/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Crypto Tracker">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="ru_RU">
+    <meta property="og:locale:alternate" content="uk_UA">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://cryptotracker.com/">
+    <meta property="twitter:title" content="Crypto Tracker - Real-Time Cryptocurrency Prices">
+    <meta property="twitter:description"
+        content="Track 250+ cryptocurrencies with AI recommendations and embeddable widgets">
+    <meta property="twitter:image" content="https://cryptotracker.com/images/twitter-card.jpg">
+    <meta name="twitter:creator" content="@cryptotracker">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Crypto Tracker",
+      "description": "Real-time cryptocurrency price tracker with AI-powered profit recommendations and embeddable widgets",
+      "url": "https://cryptotracker.com",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "1250"
+      },
+      "featureList": [
+        "Real-time cryptocurrency prices",
+        "250+ supported coins",
+        "AI-powered profit recommendations",
+        "Embeddable widgets",
+        "Multi-language support",
+        "Live market analysis"
+      ]
+    }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-top">
+                    <h1 class="logo">
+                        <span class="logo-icon">📊</span>
+                        <span class="logo-text" data-i18n="appTitle">Crypto Tracker</span>
+                    </h1>
+
+                    <!-- Navigation Buttons -->
+                    <div class="header-buttons-group">
+                        <a href="widget-builder.html" class="widget-btn" title="Create embeddable widget">
+                            <span>🎨</span>
+                            <span data-i18n="createWidget">Create Widget</span>
+                        </a>
+                        <a href="api-docs.html" class="widget-btn api-btn" title="API Documentation">
+                            <span>📚</span>
+                            <span>API Docs</span>
+                        </a>
+                        <a href="https://github.com/Adiru3" target="_blank" class="widget-btn github-btn"
+                            title="GitHub Profile">
+                            <span>💻</span>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://adiru3.github.io/Donate/" target="_blank" class="widget-btn donate-btn"
+                            title="Support the Project">
+                            <span>❤️</span>
+                            <span>Donate</span>
+                        </a>
+                    </div>
+
+                    <!-- Language Selector -->
+                    <div class="language-selector">
+                        <button class="lang-btn active" data-lang="ru">🇷🇺 RU</button>
+                        <button class="lang-btn" data-lang="ua">🇺🇦 UA</button>
+                        <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+                    </div>
+
+                </div>
+                <p class="subtitle" data-i18n="appSubtitle">Анализ рынка в реальном времени</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Single Tab: Crypto Only -->
+            <div class="tabs" style="justify-content: center;">
+                <button class="tab-btn active" data-tab="crypto">
+                    <span class="tab-icon">₿</span>
+                    <span data-i18n="tabCrypto">Криптовалюты</span>
+                </button>
+            </div>
+
+            <!-- Controls Section -->
+            <section class="controls">
+                <div class="search-box">
+                    <input type="text" id="searchInput" class="search-input" data-i18n="searchPlaceholder"
+                        placeholder="🔍 Поиск...">
+                </div>
+
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="all" data-i18n="filterAll">
+                        Все
+                    </button>
+                    <button class="filter-btn" data-filter="top-gainers" data-i18n="filterTopGainers">
+                        🚀 Самые выгодные
+                    </button>
+                    <button class="filter-btn" data-filter="top-losers" data-i18n="filterTopLosers">
+                        📉 Самые невыгодные
+                    </button>
+                    <button class="filter-btn" data-filter="most-expensive" data-i18n="filterMostExpensive">
+                        💎 Самые дорогие
+                    </button>
+                    <button class="filter-btn" data-filter="least-expensive" data-i18n="filterLeastExpensive">
+                        💰 Самые дешёвые
+                    </button>
+                    <button class="filter-btn" data-filter="highest-mcap" data-i18n="filterHighestMcap">
+                        🏆 Высокая капитализация
+                    </button>
+                    <button class="filter-btn" data-filter="recommended" data-i18n="filterRecommended">
+                        ⭐ Рекомендации
+                    </button>
+                </div>
+            </section>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-container">
+                <div class="spinner"></div>
+                <p class="loading-text" data-i18n="loading">Загрузка данных...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="error-container" style="display: none;">
+                <div class="error-icon">⚠️</div>
+                <p class="error-text" data-i18n="errorLoading">Ошибка загрузки данных</p>
+                <button id="retryBtn" class="retry-btn" data-i18n="retryButton">Попробовать снова</button>
+            </div>
+
+            <!-- Assets Grid -->
+            <section id="assetsGrid" class="coins-grid" style="display: none;">
+                <!-- Assets will be dynamically inserted here -->
+            </section>
+        </div>
+    </main>
+
+    <!-- Detailed View Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div style="display: flex; justify-content: flex-end; gap: 0.75rem; padding: 1rem 1rem 0 1rem;">
+                <button id="modalShareBtn" class="modal-share-btn" title="Share this coin">
+                    🔗 Share
+                </button>
+                <button class="modal-close" id="modalCloseBtn">✕</button>
+            </div>
+
+            <div class="modal-header">
+                <img id="modalIcon" src="" alt="" class="modal-icon">
+                <div class="modal-title-group">
+                    <h2 id="modalTitle" class="modal-title"></h2>
+                    <span id="modalSymbol" class="modal-symbol"></span>
+                </div>
+                <div id="modalPrice" class="modal-price"></div>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-chart-container">
+                    <canvas id="modalChart"></canvas>
+                </div>
+
+                <div class="modal-stats-grid">
+                    <!-- Stats will be dynamically inserted -->
+                </div>
+
+                <div class="modal-description" id="modalDescription">
+                    <!-- Description will be inserted if available -->
+                </div>
+
+                <div class="modal-links" id="modalLinks">
+                    <!-- Links will be inserted if available -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Widget Generator Modal -->
+    <div id="widgetModal" class="modal">
+        <div class="modal-overlay" onclick="closeWidgetGenerator()"></div>
+        <div class="widget-modal-content">
+            <div class="modal-header">
+                <h2>🎨 <span data-i18n="widgetGenerator">Генератор Виджетов</span></h2>
+                <button class="modal-close" onclick="closeWidgetGenerator()">×</button>
+            </div>
+
+            <div class="widget-generator-body">
+                <!-- Left Panel: Asset Selection -->
+                <div class="widget-panel widget-assets-panel">
+                    <div class="panel-header">
+                        <h3 data-i18n="selectAssets">Выбор активов</h3>
+                        <span class="asset-count"><span id="selectedAssetsCount">0</span></span>
+                    </div>
+                    <!-- Search Input -->
+                    <input type="text" id="widgetSearchInput" placeholder="🔍 Поиск монеты..."
+                        oninput="searchWidgetAssets(this.value)"
+                        style="width: 100%; padding: 10px; margin-bottom: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-size: 14px;">
+                    <div class="asset-picker" id="widgetAssetPicker">
+                        <!-- Assets will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Center Panel: Preview -->
+                <div class="widget-panel widget-preview-panel">
+                    <div class="panel-header">
+                        <h3 data-i18n="preview">Предпросмотр</h3>
+                    </div>
+                    <div class="widget-preview" id="widgetPreview">
+                        <div class="widget-preview-empty">Выберите активы для предпросмотра</div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Customization -->
+                <div class="widget-panel widget-settings-panel">
+                    <div class="panel-header">
+                        <h3 data-i18n="settings">Настройки</h3>
+                    </div>
+                    <div class="widget-settings">
+                        <div class="setting-group">
+                            <label data-i18n="widgetType">Тип виджета</label>
+                            <select id="widgetTypeSelect">
+                                <option value="card" data-i18n="widgetTypeCard">Карточки</option>
+                                <option value="ticker" data-i18n="widgetTypeTicker">Бегущая строка</option>
+                                <option value="list" data-i18n="widgetTypeList">Список</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-group">
+                            <label data-i18n="theme">Тема</label>
+                            <select id="widgetThemeSelect">
+                                <option value="dark" data-i18n="themeDark">Тёмная</option>
+                                <option value="light" data-i18n="themeLight">Светлая</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-group">
+                            <label data-i18n="widgetWidth">Ширина (px)</label>
+                            <input type="number" id="widgetWidthInput" value="300" min="200" max="600" step="10">
+                        </div>
+
+                        <div class="setting-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="widgetShowChange" checked>
+                                <span data-i18n="showChange">Показывать изменение</span>
+                            </label>
+                        </div>
+
+                        <div class="setting-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="widgetShowLogo" checked>
+                                <span data-i18n="showLogo">Показывать логотипы</span>
+                            </label>
+                        </div>
+
+                        <div class="widget-code-section">
+                            <h4 data-i18n="generatedCode">Готовый код</h4>
+                            <textarea id="widgetCodeDisplay" readonly></textarea>
+                            <button class="copy-button" id="copyWidgetCodeBtn" onclick="copyWidgetCode()">
+                                📋 <span data-i18n="copyCode">Копировать код</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">
+                <span data-i18n="footerText">Данные предоставлены</span>
+                <a href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko API</a>
+            </p>
+            <p class="footer-note">
+                <span data-i18n="footerNote">Обновление каждые 60 секунд</span> |
+                <a href="widget-builder.html">🎨 Widget Builder</a> |
+                <a href="api-docs.html">📚 API Docs</a> |
+                <a href="https://github.com/Adiru3" target="_blank" rel="noopener">💻 GitHub</a> |
+                <a href="https://adiru3.github.io/Donate/" target="_blank" rel="noopener">❤️ Support</a> |
+                <button class="footer-copy-btn" onclick="copyAPILink()" title="Copy API Link">🔗 Copy API</button>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="translations.js"></script>
+    <script src="stocks-api.js"></script>
+    <script src="steam-api.js"></script>
+    <script src="widget-generator.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
