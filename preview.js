@@ -232,47 +232,70 @@ function generateWidget(coinId, coinName) {
             
             <!-- Preview Link Tab -->
             <div id="widget-content-preview" class="widget-content">
-                <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem; font-family: Inter, sans-serif; font-size: 0.875rem;">
-                    Share thislink in Telegram, Discord, or anywhere. Always shows detailed info with auto-update:
-                </p>
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1rem; font-family: Inter, sans-serif;">📱 Preview в Telegram/Discord:</h3>
+                    <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; border-left: 3px solid #667eea;">
+                        <p style="color: #667eea; font-size: 0.875rem; margin-bottom: 0.5rem; font-family: Inter, sans-serif;">🔗 Crypto Tracker</p>
+                        <p style="color: white; font-weight: 600; margin-bottom: 0.25rem; font-family: Inter, sans-serif;">${coinName} - Live Price</p>
+                        <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem; font-family: Inter, sans-serif;">📊 Real-time data with 60-second updates</p>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-top: 1rem; font-family: Inter, sans-serif;">
+                        ℹ️ Після кліка: показується ціна, зміна 24h, Market Cap, Volume, High/Low
+                    </p>
+                </div>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9rem;">🔗 Посилання для відправки:</p>
                 <textarea id="preview-link" readonly style="width: 100%; height: 80px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 1rem; color: #22c55e; font-family: 'Courier New', monospace; font-size: 0.875rem; resize: none;">${previewUrl}</textarea>
                 <button onclick="copyCode('preview-link', 'Preview link')" style="width: 100%; margin-top: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 0.9rem 1.5rem; border-radius: 10px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 1rem;">
                     📋 Copy Preview Link
                 </button>
                 <p style="color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-top: 1rem; font-family: Inter, sans-serif;">
-                    ✨ Always shows: Price, Change, Market Cap, Volume, High/Low, Charts<br>
+                    ✨ Shows: Price, Change, Market Cap, Volume, High/Low, Charts<br>
                     🔄 Auto-updates every 60 seconds after opening
                 </p>
             </div>
             
             <!-- Simple Widget Tab -->
             <div id="widget-content-simple" class="widget-content" style="display: none;">
-                <p style="color: rgba(255,255,255,0.7); margin-bottom: 0.75rem; font-family: Inter, sans-serif; font-size: 0.875rem;">Preview:</p>
-                <iframe src="${simpleWidgetUrl}" width="100%" height="300" frameborder="0" style="border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); margin-bottom: 1rem;"></iframe>
-                <p style="color: rgba(255,255,255,0.7); margin-bottom: 0.75rem; font-family: Inter, sans-serif; font-size: 0.875rem;">Embed Code:</p>
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; font-size: 1.1rem; margin-bottom: 0.75rem; font-family: Inter, sans-serif;">📊 Simple Widget</h3>
+                    <ul style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-left: 1.5rem; font-family: Inter, sans-serif; line-height: 1.8;">
+                        <li>💰 Current Price</li>
+                        <li>📈 24h Change (%)</li>
+                        <li>🔄 Auto-updates every 60 sec</li>
+                    </ul>
+                    <p style="color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-top: 1rem; font-family: Inter, sans-serif;">
+                        📐 Size: 350 x 300 pixels
+                    </p>
+                </div>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9rem;">📝 Embed Code:</p>
                 <textarea id="simple-widget-code" readonly style="width: 100%; height: 100px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 1rem; color: #22c55e; font-family: 'Courier New', monospace; font-size: 0.875rem; resize: none;">${simpleIframe}</textarea>
                 <button onclick="copyCode('simple-widget-code', 'Simple widget')" style="width: 100%; margin-top: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 0.9rem 1.5rem; border-radius: 10px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 1rem;">
                     📋 Copy Simple Widget
                 </button>
-                <p style="color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-top: 1rem; font-family: Inter, sans-serif;">
-                    📊 Shows: Price + 24h Change<br>
-                    🔄 Auto-updates every 60 seconds
-                </p>
             </div>
             
             <!-- Detailed Widget Tab -->
             <div id="widget-content-detailed" class="widget-content" style="display: none;">
-                <p style="color: rgba(255,255,255,0.7); margin-bottom: 0.75rem; font-family: Inter, sans-serif; font-size: 0.875rem;">Preview:</p>
-                <iframe src="${detailedWidgetUrl}" width="100%" height="600" frameborder="0" style="border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); margin-bottom: 1rem;"></iframe>
-                <p style="color: rgba(255,255,255,0.7); margin-bottom: 0.75rem; font-family: Inter, sans-serif; font-size: 0.875rem;">Embed Code:</p>
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; font-size: 1.1rem; margin-bottom: 0.75rem; font-family: Inter, sans-serif;">📈 Detailed Widget</h3>
+                    <ul style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-left: 1.5rem; font-family: Inter, sans-serif; line-height: 1.8;">
+                        <li>💰 Current Price</li>
+                        <li>📈 24h Change (%)</li>
+                        <li>💎 Market Cap</li>
+                        <li>📊 24h Volume</li>
+                        <li>🏆 Market Rank</li>
+                        <li>⬆️ 24h High Price</li>
+                        <li>🔄 Auto-updates every 60 sec</li>
+                    </ul>
+                    <p style="color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-top: 1rem; font-family: Inter, sans-serif;">
+                        📐 Size: 450 x 600 pixels
+                    </p>
+                </div>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9rem;">📝 Embed Code:</p>
                 <textarea id="detailed-widget-code" readonly style="width: 100%; height: 100px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 1rem; color: #22c55e; font-family: 'Courier New', monospace; font-size: 0.875rem; resize: none;">${detailedIframe}</textarea>
                 <button onclick="copyCode('detailed-widget-code', 'Detailed widget')" style="width: 100%; margin-top: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 0.9rem 1.5rem; border-radius: 10px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer; font-size: 1rem;">
                     📋 Copy Detailed Widget
                 </button>
-                <p style="color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-top: 1rem; font-family: Inter, sans-serif;">
-                    📈 Shows: Price, Change, Market Cap, Volume, High/Low, 7-day chart, Daily profit<br>
-                    🔄 Auto-updates every 60 seconds
-                </p>
             </div>
             
             <button onclick="this.closest('div').parentElement.remove()" style="width: 100%; margin-top: 1.5rem; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.15); padding: 0.75rem 1.5rem; border-radius: 10px; font-family: Inter, sans-serif; font-weight: 600; cursor: pointer;">
