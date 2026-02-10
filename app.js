@@ -14,6 +14,63 @@ const CONFIG = {
 };
 
 // ===================================
+// CACHE FUNCTIONS
+// ===================================
+
+// Save data to localStorage with timestamp
+function saveToCache(key, data) {
+    try {
+        const cacheItem = {
+            data: data,
+            timestamp: Date.now()
+        };
+        localStorage.setItem(key, JSON.stringify(cacheItem));
+        console.log(`💾 Cached: ${key}`);
+    } catch (error) {
+        console.warn('Failed to save to cache:', error);
+    }
+}
+
+// Get data from localStorage if not expired
+function getFromCache(key) {
+    try {
+        const cached = localStorage.getItem(key);
+        if (!cached) return null;
+
+        const cacheItem = JSON.parse(cached);
+        const age = Date.now() - cacheItem.timestamp;
+
+        // Check if cache is still valid
+        if (age < CONFIG.CACHE_DURATION) {
+            console.log(`💾 Cache hit: ${key} (age: ${(age / 1000).toFixed(1)}s)`);
+            return cacheItem.data;
+        } else {
+            console.log(`💾 Cache expired: ${key}`);
+            localStorage.removeItem(key);
+            return null;
+        }
+    } catch (error) {
+        console.warn('Failed to read from cache:', error);
+        return null;
+    }
+}
+
+// Clear all cache
+function clearCache() {
+    try {
+        const keys = Object.keys(localStorage);
+        keys.forEach(key => {
+            if (key.startsWith('crypto_')) {
+                localStorage.removeItem(key);
+            }
+        });
+        console.log('💾 Cache cleared');
+    } catch (error) {
+        console.warn('Failed to clear cache:', error);
+    }
+}
+
+// ===================================
 // STATE MANAGEMENT
 // ===================================
 let state = {
@@ -101,100 +158,52 @@ function delay(ms) {
 }
 
 // ===================================
-// CACHING FUNCTIONS
-// ===================================
-
-// Get data from cache
-function getCachedData(key) {
-    try {
-        const cached = localStorage.getItem(key);
-        if (!cached) return null;
-
-        const { data, timestamp } = JSON.parse(cached);
-        const now = Date.now();
-
-        if (now - timestamp > CONFIG.CACHE_DURATION) {
-            localStorage.removeItem(key);
-            return null;
-        }
-
-        return data;
-    } catch (error) {
-        console.error('Cache read error:', error);
-        return null;
-    }
-}
-
-// Save data to cache
-function setCachedData(key, data) {
-    try {
-        const cacheData = {
-            data,
-            timestamp: Date.now()
-        };
-        localStorage.setItem(key, JSON.stringify(cacheData));
-    } catch (error) {
-        console.error('Cache write error:', error);
-    }
-}
-
-// ===================================
 // API FUNCTIONS
-// ===================================
-
-// Fetch market data for top coins with pagination
+// Fetch market data for all coins with caching
 async function fetchMarketData() {
-    // Check cache first
     const cacheKey = 'crypto_market_data';
-    const cached = getCachedData(cacheKey);
-    if (cached) {
-        console.log('Loading from cache...');
-        return cached;
+
+    // Try to get from cache first
+    const cachedData = getFromCache(cacheKey);
+    if (cachedData) {
+        return cachedData;
     }
 
-    try {
-        console.log(`Fetching ${CONFIG.COINS_PER_PAGE * CONFIG.TOTAL_PAGES} coins (${CONFIG.TOTAL_PAGES} pages)...`);
-        let allCoins = [];
+    // If no cache, fetch from API
+    console.log('📡 Fetching fresh data from API...');
+    const allData = [];
 
-        // Fetch multiple pages
-        for (let page = 1; page <= CONFIG.TOTAL_PAGES; page++) {
-            console.log(`Loading page ${page}/${CONFIG.TOTAL_PAGES}...`);
-
-            // Update loading text with progress
-            if (elements.loadingState && elements.loadingState.querySelector('.loading-text')) {
-                elements.loadingState.querySelector('.loading-text').textContent =
-                    `Загрузка монет... ${page}/${CONFIG.TOTAL_PAGES}`;
-            }
-
+    for (let page = 1; page <= CONFIG.TOTAL_PAGES; page++) {
+        try {
             const response = await fetch(
-                `${CONFIG.API_BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${CONFIG.COINS_PER_PAGE}&page=${page}&sparkline=false&price_change_percentage=24h,7d,30d`
+                `${CONFIG.API_BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${CONFIG.COINS_PER_PAGE}&page=${page}&sparkline=false&price_change_percentage=24h`
             );
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const pageData = await response.json();
-            allCoins = [...allCoins, ...pageData];
+            const data = await response.json();
+            allData.push(...data.map(coin => ({ ...coin, type: 'crypto' })));
 
-            // Delay before next page to avoid rate limits
+            console.log(`Loaded page ${page}/${CONFIG.TOTAL_PAGES} (${data.length} coins)`);
+
+            // Add delay between pages to respect rate limits
             if (page < CONFIG.TOTAL_PAGES) {
-                console.log(`Waiting ${CONFIG.PAGINATION_DELAY}ms before next page...`);
-                await delay(CONFIG.PAGINATION_DELAY);
+                await new Promise(resolve => setTimeout(resolve, CONFIG.PAGINATION_DELAY));
             }
+        } catch (error) {
+            console.error(`Error loading page ${page}:`, error);
+            if (page === 1) throw error;
         }
-
-        console.log(`Successfully loaded ${allCoins.length} coins`);
-        const mappedData = allCoins.map(coin => ({ ...coin, type: 'crypto' }));
-
-        // Save to cache
-        setCachedData(cacheKey, mappedData);
-
-        return mappedData;
-    } catch (error) {
-        console.error('Error fetching market data:', error);
-        throw error;
     }
+
+    console.log(`Total coins loaded: ${allData.length}`);
+
+    // Save to cache
+    saveToCache(cacheKey, allData);
+
+    return allData;
 }
 
 // Fetch detailed coin data
