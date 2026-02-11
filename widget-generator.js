@@ -157,7 +157,7 @@ function generateCardWidgetHTML() {
     const secondaryColor = isDark ? '#a0aec0' : '#666666';
 
     return `
-        <div class="crypto-widget-preview" style="background: ${bgColor}; color: ${textColor}; border-radius: 12px; padding: 16px; width: ${widgetState.width}px;">
+        <div class="crypto-widget-preview" style="background: ${bgColor}; color: ${textColor}; border-radius: 12px; padding: 16px; width: ${widgetState.width}px; max-width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
             ${widgetState.selectedAssets.map(asset => {
         const price = asset.current_price || asset.price || 0;
         const change = asset.price_change_percentage_24h || asset.changePercent || 0;
@@ -188,7 +188,7 @@ function generateTickerWidgetHTML() {
     const textColor = isDark ? '#ffffff' : '#000000';
 
     return `
-        <div class="crypto-widget-ticker" style="background: ${bgColor}; color: ${textColor}; border-radius: 8px; padding: 12px; width: ${widgetState.width}px; overflow: hidden;">
+        <div class="crypto-widget-ticker" style="background: ${bgColor}; color: ${textColor}; border-radius: 8px; padding: 12px; width: ${widgetState.width}px; max-width: 100%; box-sizing: border-box; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
             <div style="display: flex; gap: 24px; animation: scroll-left 20s linear infinite;">
                 ${widgetState.selectedAssets.concat(widgetState.selectedAssets).map(asset => {
         const price = asset.current_price || asset.price || 0;
@@ -222,7 +222,7 @@ function generateListWidgetHTML() {
     const textColor = isDark ? '#ffffff' : '#000000';
 
     return `
-        <div class="crypto-widget-list" style="background: ${bgColor}; color: ${textColor}; border-radius: 12px; padding: 8px; width: ${widgetState.width}px;">
+        <div class="crypto-widget-list" style="background: ${bgColor}; color: ${textColor}; border-radius: 12px; padding: 8px; width: ${widgetState.width}px; max-width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
             ${widgetState.selectedAssets.map((asset, index) => {
         const price = asset.current_price || asset.price || 0;
         const change = asset.price_change_percentage_24h || asset.changePercent || 0;
@@ -305,7 +305,7 @@ function generateWidgetCode() {
         let html = '';
         
         if (type === 'card') {
-            html = \`<div style="background: \${bgColor}; color: \${textColor}; border-radius: 12px; padding: 16px; width: \${width}px; font-family: system-ui;">\`;
+            html = \`<div style="background: \${bgColor}; color: \${textColor}; border-radius: 12px; padding: 16px; width: \${width}px; max-width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-family: system-ui, -apple-system, sans-serif;">\`;
             assetsData.forEach(asset => {
                 const changeColor = asset.change >= 0 ? '#38ef7d' : '#ff6a00';
                 html += \`

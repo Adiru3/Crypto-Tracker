@@ -44,6 +44,7 @@ const translations = {
         closeButton: 'Закрыть',
         overview: 'Обзор',
         statistics: 'Статистика',
+        performance: 'Динамика цен',
         about: 'О проекте',
         links: 'Ссылки',
 
@@ -168,6 +169,7 @@ const translations = {
         closeButton: 'Закрити',
         overview: 'Огляд',
         statistics: 'Статистика',
+        performance: 'Динаміка цін',
         about: 'Про проект',
         links: 'Посилання',
 
@@ -292,6 +294,7 @@ const translations = {
         closeButton: 'Close',
         overview: 'Overview',
         statistics: 'Statistics',
+        performance: 'Performance',
         about: 'About',
         links: 'Links',
 

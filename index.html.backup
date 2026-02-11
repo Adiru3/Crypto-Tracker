@@ -42,7 +42,9 @@
     <meta name="twitter:creator" content="@cryptotracker">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
 
     <!-- Schema.org Structured Data -->
@@ -99,34 +101,15 @@
                         <span class="logo-text" data-i18n="appTitle">Crypto Tracker</span>
                     </h1>
 
-                    <!-- Navigation Buttons -->
-                    <div class="header-buttons-group">
-                        <a href="widget-builder.html" class="widget-btn" title="Create embeddable widget">
-                            <span>🎨</span>
-                            <span data-i18n="createWidget">Create Widget</span>
-                        </a>
-                        <a href="api-docs.html" class="widget-btn api-btn" title="API Documentation">
-                            <span>📚</span>
-                            <span>API Docs</span>
-                        </a>
-                        <a href="https://github.com/Adiru3" target="_blank" class="widget-btn github-btn"
-                            title="GitHub Profile">
-                            <span>💻</span>
-                            <span>GitHub</span>
-                        </a>
-                        <a href="https://adiru3.github.io/Donate/" target="_blank" class="widget-btn donate-btn"
-                            title="Support the Project">
-                            <span>❤️</span>
-                            <span>Donate</span>
-                        </a>
-                    </div>
-
-                    <!-- Language Selector -->
-                    <div class="language-selector">
-                        <button class="lang-btn active" data-lang="ru">🇷🇺 RU</button>
-                        <button class="lang-btn" data-lang="ua">🇺🇦 UA</button>
-                        <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
-                    </div>
+                    <!-- Navigation Buttons -->\n <div class=\"header-buttons-group\">\n <a href=\"widget-builder.html\"
+                            class=\"widget-btn\" title=\"Create embeddable widget\">\n <span>🎨</span>\n <span
+                                data-i18n=\"createWidget\">Create Widget</span>\n </a>\n <a href=\"api-docs.html\"
+                            class=\"widget-btn api-btn\" title=\"API Documentation\">\n <span>📚</span>\n <span>API
+                                Docs</span>\n </a>\n <a href=\"https://github.com/Adiru3\" target=\"_blank\"
+                            class=\"widget-btn github-btn\" title=\"GitHub Profile\">\n <span>💻</span>\n
+                            <span>GitHub</span>\n </a>\n <a href=\"https://adiru3.github.io/Donate/\" target=\"_blank\"
+                            class=\"widget-btn donate-btn\" title=\"Support the Project\">\n <span>❤️</span>\n
+                            <span>Donate</span>\n </a>\n </div>
 
                 </div>
                 <p class="subtitle" data-i18n="appSubtitle">Анализ рынка в реальном времени</p>
@@ -201,12 +184,7 @@
     <div id="detailModal" class="modal">
         <div class="modal-backdrop"></div>
         <div class="modal-content">
-            <div style="display: flex; justify-content: flex-end; gap: 0.75rem; padding: 1rem 1rem 0 1rem;">
-                <button id="modalShareBtn" class="modal-share-btn" title="Share this coin">
-                    🔗 Share
-                </button>
-                <button class="modal-close" id="modalCloseBtn">✕</button>
-            </div>
+            <button class="modal-close" id="modalCloseBtn">✕</button>
 
             <div class="modal-header">
                 <img id="modalIcon" src="" alt="" class="modal-icon">
@@ -339,8 +317,7 @@
                 <a href="widget-builder.html">🎨 Widget Builder</a> |
                 <a href="api-docs.html">📚 API Docs</a> |
                 <a href="https://github.com/Adiru3" target="_blank" rel="noopener">💻 GitHub</a> |
-                <a href="https://adiru3.github.io/Donate/" target="_blank" rel="noopener">❤️ Support</a> |
-                <button class="footer-copy-btn" onclick="copyAPILink()" title="Copy API Link">🔗 Copy API</button>
+                <a href="https://adiru3.github.io/Donate/" target="_blank" rel="noopener">❤️ Support</a>
             </p>
         </div>
     </footer>

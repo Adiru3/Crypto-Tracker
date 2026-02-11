@@ -652,9 +652,14 @@ body::before {
     max-width: 900px;
     max-height: 90vh;
     margin: 5vh auto;
-    background: var(--bg-secondary);
+    background: rgba(21, 27, 43, 0.95);
+    /* Slightly transparent */
+    backdrop-filter: blur(20px);
+    /* Premium glass effect */
+    -webkit-backdrop-filter: blur(20px);
     border-radius: var(--border-radius);
-    border: 2px solid var(--border-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     padding: var(--spacing-lg);
     overflow-y: auto;
     animation: slideUp 0.3s ease;
@@ -752,6 +757,84 @@ body::before {
     background: var(--bg-tertiary);
     border-radius: var(--border-radius-sm);
     padding: var(--spacing-md);
+    gap: var(--spacing-md);
+}
+
+.performance-section {
+    margin-top: var(--spacing-lg);
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-md);
+}
+
+.performance-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: var(--spacing-xs);
+}
+
+.performance-grid {
+    display: grid;
+    /* Responsive grid: min 140px ensures they don't get too squished */
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--spacing-sm);
+}
+
+.performance-item {
+    background: var(--bg-secondary);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Slight shadow for button feel */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.performance-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-color: var(--accent-primary);
+}
+
+.perf-label {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.perf-value {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.perf-sum {
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.perf-positive {
+    color: var(--accent-success);
+}
+
+.perf-negative {
+    color: var(--accent-danger);
+}
+
+.perf-neutral {
+    color: var(--text-secondary);
 }
 
 .modal-stats-grid {
@@ -826,35 +909,80 @@ body::before {
         padding: var(--spacing-lg) 0;
     }
 
+    .header-top {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .language-selector {
+        align-self: flex-end;
+    }
+
     .logo {
         font-size: var(--font-size-2xl);
     }
 
-    .subtitle {
-        font-size: var(--font-size-base);
+    /* Modal becomes proper full screen on mobile */
+    .modal-content {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        margin: 0;
+        border-radius: 0;
+        border: none;
+        padding: var(--spacing-md);
+        background: var(--bg-primary);
+        /* Solid bg for performance/readability on mobile */
     }
 
+    .modal-close {
+        top: var(--spacing-md);
+        right: var(--spacing-md);
+        width: 36px;
+        height: 36px;
+        font-size: 1.2rem;
+    }
+
+    .modal-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .modal-title-group {
+        width: 100%;
+    }
+
+    .modal-price {
+        font-size: 2rem;
+    }
+
+    /* Optimize grids for mobile */
     .coins-grid {
-        grid-template-columns: 1fr;
+        /* Allow 1 column on small, 2 on larger phones */
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
 
-    .filters {
-        gap: var(--spacing-xs);
+    .modal-stats-grid {
+        grid-template-columns: 1fr 1fr;
+        /* Force 2 columns */
     }
 
-    .filter-btn {
-        font-size: var(--font-size-xs);
-        padding: var(--spacing-xs) var(--spacing-sm);
-    }
-
-    .coin-price {
-        font-size: var(--font-size-xl);
+    .performance-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* Force 2 columns */
     }
 }
 
 @media (max-width: 480px) {
-    .coin-stats {
+    .coins-grid {
         grid-template-columns: 1fr;
+        /* Force 1 column on very small screens */
+    }
+
+    .modal-stats-grid {
+        grid-template-columns: 1fr;
+        /* Stack stats on very small screens */
     }
 
     .logo {
